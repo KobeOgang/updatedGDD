@@ -28,16 +28,25 @@ public class PlayerMovement : MonoBehaviour
     
     void Update()
     {
-        dirX = Input.GetAxisRaw("Horizontal");
-        float speed = Input.GetKey(KeyCode.S) ? crouchWalkSpeed : walkSpeed;
-        rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
-
-        isGrounded = IsGrounded();
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (CanMove)
         {
-            rb.velocity = new Vector2(rb.velocity.x, 9f);
+            dirX = Input.GetAxisRaw("Horizontal");
+            float speed = Input.GetKey(KeyCode.S) ? crouchWalkSpeed : walkSpeed;
+            rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
+
+            isGrounded = IsGrounded();
+
+            if (Input.GetButtonDown("Jump") && isGrounded)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 9f);
+            }
         }
+        else
+        {
+            dirX = Input.GetAxisRaw("Horizontal");
+            rb.velocity = new Vector2(dirX * 0, rb.velocity.y);
+        }
+        
        
       
         UpdateAnimationUpdate();
@@ -61,11 +70,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            anim.SetBool("jumping", true);
+            anim.SetTrigger("Jumping");
         }
         else
         {
-            anim.SetBool("jumping", false);
+            anim.ResetTrigger("Jumping");
         }
 
         if (Input.GetKey(KeyCode.S))
@@ -98,6 +107,11 @@ public class PlayerMovement : MonoBehaviour
 
         return hit.collider != null;
     }
+
+    public bool CanMove { get
+        {
+            return anim.GetBool("canMove");
+        } }
 
 
 }

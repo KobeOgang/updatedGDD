@@ -11,16 +11,24 @@ public class PlayerCombat : MonoBehaviour
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
     public int attackDamage = 50;
+    private bool isAttacking = false;
 
     void Update()
-    {        
-       Attack();    
+    {
+        if (!isAttacking)
+        {
+            dirX = Input.GetAxisRaw("Horizontal");
+            // Your movement logic here
+        }
+
+        Attack();
     }
 
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0)) // 0 represents the left mouse button
+        if (Input.GetMouseButtonDown(0) && !isAttacking) // 0 represents the left mouse button
         {
+            isAttacking = true;
             anim.SetBool("attacking", true);
 
             // Check if facing left while attacking and flip the sprite.
@@ -39,6 +47,7 @@ public class PlayerCombat : MonoBehaviour
         }
         else
         {
+            isAttacking = false;
             anim.SetBool("attacking", false);
         }
     }
