@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 internal class AnimationStrings
 {
+    internal static string attackCooldown = "attackCooldown";
     
 
 }

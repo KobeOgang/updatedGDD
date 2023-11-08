@@ -9,10 +9,11 @@ public class Enemies : MonoBehaviour
     public float walkSpeed = 3f;
     public float walkStopRate = 0.02f;
     public DetectionZone attackZone;
+    public DetectionZone cliffDetectionZone;
 
     Rigidbody2D rb;
     TouchingDirections touchingDirections;
-    Animator anim;
+    Animator animator;
 
     public enum WalkableDirection { Right, Left }
     private WalkableDirection _walkDirection;
@@ -40,7 +41,7 @@ public class Enemies : MonoBehaviour
     public bool _hasTarget = false;
     public bool HasTarget { get { return _hasTarget; } private set { 
              _hasTarget = value;
-            anim.SetBool("hasTarget", value);
+            animator.SetBool("hasTarget", value);
 
 
         } }
@@ -49,27 +50,44 @@ public class Enemies : MonoBehaviour
     {
         get
         {
-            return anim.GetBool("canMove");
+            return animator.GetBool("canMove");
         }
     }
+
+    public float AttackCooldown { get
+        {
+            return animator.GetFloat(AnimationStrings.attackCooldown);
+           
+        } private set {
+            animator.SetFloat(AnimationStrings.attackCooldown, Mathf.Max(value, 0));
+        }
+    }
+    
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         touchingDirections = GetComponent<TouchingDirections>();
-        anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+        
     }
 
     private void Update()
     {
         HasTarget = attackZone.detectedColliders.Count > 0;
+
+        if (AttackCooldown > 0)
+        {
+            AttackCooldown -= Time.deltaTime;
+        }
+        
     }
 
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (touchingDirections.IsOnWall && touchingDirections.IsGrounded)
+        if (touchingDirections.IsOnWall && touchingDirections.IsGrounded || cliffDetectionZone.detectedColliders.Count == 0)
         {
             FlipDirection();
         }
@@ -103,6 +121,14 @@ public class Enemies : MonoBehaviour
     public void OnHit(float damage, Vector2 knockback)
     {
         rb.velocity = new Vector2(knockback.x, rb.velocity.y * knockback.y);
+    }
+
+    public void OnCliffDetected()
+    {
+        if(touchingDirections.IsGrounded)
+        {
+            FlipDirection();
+        }
     }
 
 }

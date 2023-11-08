@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class Attack : MonoBehaviour
 {
     Collider2D attackCollider;
-    public float attackDamage = 20f;
+    public int attackDamage = 20;
     public Vector2 knockback = Vector2.zero;
 
     private void Awake()
