@@ -1,87 +1,123 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb;
+
+    public float walkSpeed = 5f;
+    public float runSpeed = 9f;
+    Vector2 moveInput;
     private SpriteRenderer sprite;
-    private Animator anim;
-    private float dirX = 0f;
-
-    public float walkSpeed = 9f; // Normal walk speed
-    public float crouchWalkSpeed = 3f; // Speed while crouch walking
-
-    private bool isGrounded = false;
 
 
 
-
-    void Start()
+    public float CurrentMoveSpeed
     {
-        rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-
-    }
-
-    
-    void Update()
-    {
-        if (CanMove)
+        get
         {
-            dirX = Input.GetAxisRaw("Horizontal");
-            float speed = Input.GetKey(KeyCode.S) ? crouchWalkSpeed : walkSpeed;
-            rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
-
-            isGrounded = IsGrounded();
-
-            if (Input.GetButtonDown("Jump") && isGrounded)
+            if (IsMoving)
             {
-                rb.velocity = new Vector2(rb.velocity.x, 9f);
+                if (isRunning)
+                {
+                    return runSpeed;
+                }
+                else
+                {
+                    return walkSpeed;
+                }
+            }
+            else
+            {
+                return 0;
             }
         }
-        else
-        {
-            dirX = Input.GetAxisRaw("Horizontal");
-            rb.velocity = new Vector2(dirX * 0, rb.velocity.y);
-        }
-        
-       
-      
-        UpdateAnimationUpdate();
     }
+
+    [SerializeField]
+    private bool _isMoving = false;
+
+    public bool IsMoving
+    {
+        get
+        {
+            return _isMoving;
+        }
+        private set
+        {
+            _isMoving = value;
+            anim.SetBool("isMoving", value);
+        }
+    }
+
+    [SerializeField]
+    private bool running = false;
+
+    public bool isRunning
+    {
+        get
+        {
+            return running;
+        }
+        set
+        {
+            running = value;
+            anim.SetBool("running", value);
+        }
+    }
+
+
+
+
+
+    Rigidbody2D rb;
+    Animator anim;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+        UpdateAnimationUpdate();
+        anim.SetFloat("yVelocity", rb.velocity.y);
+    }
+
+
     private void UpdateAnimationUpdate()
     {
-        if (dirX > 0f)
+        if (moveInput.x > 0f)
         {
-            anim.SetBool("running", true);
             sprite.flipX = false;
         }
-        else if (dirX < 0f)
+        else if (moveInput.x < 0f)
         {
-            anim.SetBool("running", true);
             sprite.flipX = true;
-        }
-        else
-        {
-            anim.SetBool("running", false);
-        }
-
-        if (Input.GetKey(KeyCode.Space))
-        {
-            anim.SetTrigger("Jumping");
-        }
-        else
-        {
-            anim.ResetTrigger("Jumping");
         }
 
         if (Input.GetKey(KeyCode.S))
         {
             anim.SetBool("crouching", true);
 
-            if (dirX != 0f)
+            if (moveInput.x != 0f)
             {
                 anim.SetBool("crouchwalk", true);
             }
@@ -96,22 +132,36 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("crouchwalk", false);
         }
 
-        
-
     }
 
-    private bool IsGrounded()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        Collider2D collider = GetComponent<Collider2D>();
-        RaycastHit2D hit = Physics2D.Raycast(collider.bounds.center, Vector2.down, collider.bounds.extents.y + 0.1f, LayerMask.GetMask("Ground"));
+        moveInput = context.ReadValue<Vector2>();
 
-        return hit.collider != null;
+        IsMoving = moveInput != Vector2.zero;
+
     }
 
-    public bool CanMove { get
-        {
-            return anim.GetBool("canMove");
-        } }
 
+
+    public void OnRun(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isRunning = true;
+        }
+        else if (context.canceled)
+        {
+            isRunning = false;
+        }
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+
+        }
+    }
 
 }

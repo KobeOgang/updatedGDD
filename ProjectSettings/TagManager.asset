@@ -15,9 +15,9 @@ TagManager:
   - Ground
   - Player
   - Enemy
-  - 
-  - 
-  - 
+  - Wall
+  - PlayerHitBox
+  - EnemyHitBox
   - 
   - 
   - 
@@ -44,6 +44,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 3645504529
+    locked: 0
+  - name: Wall
+    uniqueID: 651225379
     locked: 0
   - name: Player
     uniqueID: 3567280707
