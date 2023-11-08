@@ -15,7 +15,8 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         gameCanvas = FindObjectOfType<Canvas>();
-       
+        CharacterEvents.characterDamaged += CharacterTookDamage;
+
     }
 
     private void OnEnable()
@@ -25,24 +26,27 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void OnDisable()
+    private void OnDisable()    
     {
-        CharacterEvents.characterDamaged += CharacterTookDamage;
-        CharacterEvents.characterHealed += CharacterHealed;
+        CharacterEvents.characterDamaged -= CharacterTookDamage;
+        CharacterEvents.characterHealed -= CharacterHealed;
     }
 
 
-    public void CharacterTookDamage(GameObject character, int damageRecieved)
+    public void CharacterTookDamage(GameObject character, float damageRecieved)
     {
+        Debug.Log("CharacterTookDamage method is called.");
         Vector3 spawnPosition = Camera.main.WorldToScreenPoint(character.transform.position);
 
         TMP_Text tmpText = Instantiate(damageTextPrefab, spawnPosition, Quaternion.identity, gameCanvas.transform).GetComponent<TMP_Text>();
 
         tmpText.text = damageRecieved.ToString();
 
+        
+
     }
 
-    public void CharacterHealed(GameObject character, int healthRestored) {
+    public void CharacterHealed(GameObject character, float healthRestored) {
 
         Vector3 spawnposition = Camera.main.WorldToScreenPoint(character.transform.position);
 

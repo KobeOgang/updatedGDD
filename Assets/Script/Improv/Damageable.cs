@@ -5,16 +5,15 @@ using UnityEngine.Events;
 
 public class Damageable : MonoBehaviour
 {
-    [System.Serializable]
-    public class DamageEvent : UnityEvent<int , Vector2> { }
-    public DamageEvent damageableHit;
+    
+    public UnityEvent<float, Vector2> damageableHit;
 
     Animator anim;
 
 
     [SerializeField]
-    private int _maxHealth;
-    public int MaxHealth
+    private float _maxHealth;
+    public float MaxHealth
     {
         get
         {
@@ -27,9 +26,9 @@ public class Damageable : MonoBehaviour
     }
 
     [SerializeField]
-    private int _health = 100;
+    private float _health = 100;
 
-    public int Health
+    public float Health
     {
         get
         {
@@ -92,7 +91,7 @@ public class Damageable : MonoBehaviour
         
     }
 
-    public bool Hit(int damage, Vector2 knockback)
+    public bool Hit(float damage, Vector2 knockback)
     {
         if (IsAlive && !isInvinsible)
         {

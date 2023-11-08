@@ -210,8 +210,10 @@ MonoBehaviour:
   playerCollider: {fileID: 0}
   crouchingColliderHeight: 0.2
   originalHeight: 0.5
+  swordAttack: {fileID: 0}
   _isMoving: 0
   running: 0
+  _isFacingRight: 1
 --- !u!114 &7835650922129949667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -672,13 +674,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.2625573, y: 0.11637518}
+    - - {x: 0.31583676, y: 0.13490716}
       - {x: 0.1505097, y: 0.1520645}
       - {x: 0.15839668, y: 0.068061545}
-      - {x: 0.22111984, y: -0.0036916179}
-      - {x: 0.17894125, y: -0.07767863}
-      - {x: 0.2778417, y: -0.049214695}
-      - {x: 0.36921597, y: -0.0023277274}
+      - {x: 0.16552372, y: -0.017590467}
+      - {x: 0.16504192, y: -0.11937537}
+      - {x: 0.2593098, y: -0.109443426}
+      - {x: 0.33910143, y: -0.120468326}
       - {x: 0.33199754, y: 0.030454773}
   m_UseDelaunayMesh: 0
 --- !u!114 &8818406501414252869

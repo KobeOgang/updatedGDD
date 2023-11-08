@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Damage
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a55e907099583904fbe5e935adb3de48, type: 2}
-  m_sharedMaterial: {fileID: -1299740090198418309, guid: a55e907099583904fbe5e935adb3de48, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: aae6c39b67b807e4eb3051450a4a8d28, type: 2}
+  m_sharedMaterial: {fileID: -2262267706071669959, guid: aae6c39b67b807e4eb3051450a4a8d28, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -148,3 +148,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: {x: 0, y: 75, z: 0}
+  timeToFade: 1
