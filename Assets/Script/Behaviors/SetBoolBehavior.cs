@@ -6,6 +6,7 @@ public class SetBoolBehavior : StateMachineBehaviour
 {
     public string boolName;
     public bool updateOnState;
+    public bool updateOnStateMachine;
     public bool valueOnEnter, valueOnExit;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -44,4 +45,21 @@ public class SetBoolBehavior : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
+
+    public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
+    {
+        if (updateOnStateMachine)
+        {
+            animator.SetBool(boolName, valueOnEnter);
+        }
+    }
+
+    public override void OnStateMachineExit(Animator animator, int stateMachinePathHash)
+    {
+        if (updateOnStateMachine)
+        {
+            animator.SetBool(boolName, valueOnExit);
+        }
+    }
+
 }
