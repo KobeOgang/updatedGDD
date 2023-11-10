@@ -10,15 +10,28 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
     public Vector2 moveInput;
+    private Vector2 blockedVelocity;
     private SpriteRenderer sprite;
     TouchingDirections touch;
     public float jumpImpulse = 10f;
+
+    private bool canDash = true;
+    private bool isDashing;
+    public float dashingPower = 50f;
+    public float dashingTime = 0.2f;
+    public float dashingCooldown = 1f;
+
+    [SerializeField] private TrailRenderer tr;
+
 
     public CapsuleCollider2D playerCollider;
     public float crouchingColliderHeight = 0.2f;
     public float originalHeight = 0.5f;
 
     public Transform swordAttack;
+    public Transform swordAttack2;
+    public Transform swordAttack3;
+    Damageable damageable;
 
 
 
@@ -118,10 +131,13 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent <SpriteRenderer>();
         touch = GetComponent<TouchingDirections>();
+        damageable = GetComponent<Damageable>();
 
         playerCollider = GetComponent<CapsuleCollider2D>();
 
         swordAttack = transform.Find("SwordAttack");
+        swordAttack2 = transform.Find("SwordAttack2");
+        swordAttack3 = transform.Find("SwordAttack3");
 
 
     }
@@ -129,12 +145,20 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!LockedVelocity)
+        if (!LockedVelocity)
         {
-            rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+            if (!damageable.IsBlocking)
+            {
+                rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+            }
+            else
+            {
+                // Lock the velocity when blocking
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            }
         }
 
-        
+
         UpdateAnimationUpdate();
         anim.SetFloat("yVelocity", rb.velocity.y);
 
@@ -145,6 +169,12 @@ public class PlayerController : MonoBehaviour
         else
         {
             StandUp();
+        }
+
+        if (Keyboard.current.cKey.wasPressedThisFrame && canDash && !isDashing)
+        {
+            anim.SetTrigger("dash");
+            StartCoroutine(Dash());
         }
 
     }
@@ -186,11 +216,15 @@ public class PlayerController : MonoBehaviour
             {
                 sprite.flipX = false;
                 swordAttack.localPosition = new Vector3(0f, swordAttack.localPosition.y, swordAttack.localPosition.z);
+                swordAttack2.localPosition = new Vector3(0f, swordAttack.localPosition.y, swordAttack.localPosition.z);
+                swordAttack3.localPosition = new Vector3(0f, swordAttack.localPosition.y, swordAttack.localPosition.z);
             }
             else if (moveInput.x < 0f)
             {
                 sprite.flipX = true;
                 swordAttack.localPosition = new Vector3(-0.5f, swordAttack.localPosition.y, swordAttack.localPosition.z);
+                swordAttack2.localPosition = new Vector3(-0.5f, swordAttack.localPosition.y, swordAttack.localPosition.z);
+                swordAttack3.localPosition = new Vector3(-0.5f, swordAttack.localPosition.y, swordAttack.localPosition.z);
             }
         }
           
@@ -255,9 +289,73 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnBlock(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            anim.SetBool("blocking", true);
+            damageable.IsBlocking = true;
+            
+        }
+        else if (context.canceled)
+        {
+            anim.SetBool("blocking", false);
+            damageable.IsBlocking = false;
+            
+        }
+    }
+
     public void OnHit(float damage, Vector2 knockback)
     {
         rb.velocity = new Vector2(knockback.x, rb.velocity.y * knockback.y);
+    }
+
+
+    private IEnumerator Dash()
+    {
+        if (canDash)
+        {
+            canDash = false;
+            isDashing = true;
+
+            // Store the original X and Y velocities
+            float originalXVelocity = rb.velocity.x;
+            float originalYVelocity = rb.velocity.y;
+
+            // Calculate dash direction based on input or player's facing direction
+            float dashDirection = 0f;
+
+            if (moveInput.x > 0f)
+            {
+                dashDirection = 1f;
+            }
+            else if (moveInput.x < 0f)
+            {
+                dashDirection = -1f;
+            }
+            else
+            {
+                // If there's no input, default to the player's current facing direction
+                dashDirection = IsFacingRight ? 1f : -1f;
+            }
+
+            // Apply the dash velocity (only modify the X velocity)
+            rb.velocity = new Vector2(transform.localScale.x * dashDirection * dashingPower, 0f);
+            tr.emitting = true;
+
+            yield return new WaitForSeconds(dashingTime);
+
+            tr.emitting = false;
+
+            // Restore the original X and Y velocities after the dash
+            rb.velocity = new Vector2(originalXVelocity, originalYVelocity);
+            isDashing = false;
+
+            yield return new WaitForSeconds(dashingCooldown);
+
+            canDash = true;
+        }
+
     }
 
 }

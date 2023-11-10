@@ -57,6 +57,16 @@ public class Damageable : MonoBehaviour
     private float timeSinceHit = 0;
     public float invincibilityTime = 0.25f;
 
+
+    [SerializeField]
+    private bool isBlocking = false;
+
+    public bool IsBlocking
+    {
+        get { return isBlocking; }
+        set { isBlocking = value; }
+    }
+
     public bool IsAlive
     {
         get
@@ -95,12 +105,19 @@ public class Damageable : MonoBehaviour
     {
         if (IsAlive && !isInvinsible)
         {
-            Health -= damage;
-            isInvinsible = true;
+            if (!IsBlocking) 
+            {
+                Health -= damage;
+                isInvinsible = true;
 
-            anim.SetTrigger("hit");
-            damageableHit.Invoke(damage, knockback);
-            CharacterEvents.characterDamaged.Invoke(gameObject, damage);
+                anim.SetTrigger("hit");
+                damageableHit.Invoke(damage, knockback);
+                CharacterEvents.characterDamaged.Invoke(gameObject, damage);
+            }
+            else
+            {
+                anim.SetTrigger("blockHit");
+            }
         }
         return false;
     }
