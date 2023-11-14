@@ -12,7 +12,7 @@ public class MovingBackground : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cam = GameObject.Find("Main Camera");
+        cam = GameObject.Find("Camera");
         startPos = transform.position.x;
         length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
