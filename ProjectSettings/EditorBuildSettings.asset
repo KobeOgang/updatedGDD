@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes 1/Main Menu.unity
     guid: 51d3d99500afd2a47aee5055fbc80a7c
   - enabled: 1
+    path: Assets/Scenes/DojoRemake.unity
+    guid: c2b8e693a0227ff4a90d3459d7c54252
+  - enabled: 1
     path: Assets/Scenes 1/Bamboo.unity
     guid: a035118e225358440b2417958b54738e
   - enabled: 1
