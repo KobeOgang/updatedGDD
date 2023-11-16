@@ -590,7 +590,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4862840404025158301}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -624,7 +624,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.1
   m_PreviewTimeScale: 0
   m_Parameters:
     serializedVersion: 3
@@ -864,7 +864,7 @@ Transform:
   m_GameObject: {fileID: 7684471395758010774}
   serializedVersion: 2
   m_LocalRotation: {x: -0.012588097, y: 0.0053916867, z: 0.00049086625, w: 0.9999062}
-  m_LocalPosition: {x: -0.015770463, y: 0.08482089, z: -0.999625}
+  m_LocalPosition: {x: 5.672079, y: 0.029320836, z: -0.97977096}
   m_LocalScale: {x: 0.10000001, y: 0.1, z: 0.10000001}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -81,7 +81,9 @@ public class Enemies : MonoBehaviour
         {
             AttackCooldown -= Time.deltaTime;
         }
-        
+
+        Attack();
+
     }
 
 
@@ -105,7 +107,8 @@ public class Enemies : MonoBehaviour
         {
             rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, 0, walkStopRate), rb.velocity.y);
         }
-        
+
+
     }
 
     public void FlipDirection()
@@ -134,6 +137,49 @@ public class Enemies : MonoBehaviour
         {
             FlipDirection();
         }
+    }
+
+
+    void Attack()
+    {
+        if (HasTarget)
+        {
+            // Generate a random number (0, 1, or 2) to choose between Attack1, Attack2, and Attack3
+            int randomAttack = UnityEngine.Random.Range(0, 3);
+
+            // Check the current state of the boolean parameters
+            bool currentAttack1 = animator.GetBool("Attack1");
+            bool currentAttack2 = animator.GetBool("Attack2");
+            bool currentAttack3 = animator.GetBool("Attack3");
+
+            // Set the corresponding boolean parameter based on the random number
+            if (randomAttack == 0 && !currentAttack1)
+            {
+                animator.SetBool("Attack1", true);
+                animator.SetBool("Attack2", false);
+                animator.SetBool("Attack3", false);
+            }
+            else if (randomAttack == 1 && !currentAttack2)
+            {
+                animator.SetBool("Attack1", false);
+                animator.SetBool("Attack2", true);
+                animator.SetBool("Attack3", false);
+            }
+            else if (randomAttack == 2 && !currentAttack3)
+            {
+                animator.SetBool("Attack1", false);
+                animator.SetBool("Attack2", false);
+                animator.SetBool("Attack3", true);
+            }
+        }
+        else
+        {
+            // Reset the boolean parameters to allow future random selections
+            animator.SetBool("Attack1", false);
+            animator.SetBool("Attack2", false);
+            animator.SetBool("Attack3", false);
+        }
+
     }
 
 }
