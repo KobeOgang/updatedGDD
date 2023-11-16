@@ -6,15 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
-    guid: e31815fca65a4054a953e5ee6f33ea43
+    path: Assets/Scenes 1/Main Menu.unity
+    guid: 51d3d99500afd2a47aee5055fbc80a7c
   - enabled: 1
-    path: Assets/Scenes/Game.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/DojoRemake.unity
+    guid: c2b8e693a0227ff4a90d3459d7c54252
   - enabled: 1
-    path: Assets/Scenes/GameOver.unity
-    guid: 7d189bd2b020faa428c4ad0140ffa0af
+    path: Assets/Scenes 1/Bamboo.unity
+    guid: a035118e225358440b2417958b54738e
   - enabled: 1
-    path: Assets/Scenes/Win.unity
-    guid: e676dd1e629317843bff62098f0e82bc
+    path: Assets/Scenes 1/Dojo.unity
+    guid: ef9b825fe3bac4246991ffcfffddc8a2
+  - enabled: 1
+    path: Assets/Scenes 1/Temple(Hallway).unity
+    guid: bf51da409b8b1c44c8f69ef9b4ba61cb
+  - enabled: 1
+    path: Assets/Scenes 1/End.unity
+    guid: b859536e829b42343a90559fc1f2ee4e
   m_configObjects: {}

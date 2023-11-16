@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9964b4b74f5c7489c1db6efc3232eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 20
+  attackDamage: 5
   knockback: {x: 1, y: 3}
 --- !u!1 &1155905033591522520
 GameObject:
@@ -318,8 +318,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1110461439
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -176162817, guid: c251bf9c941512a4683df9018c7abd4b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
